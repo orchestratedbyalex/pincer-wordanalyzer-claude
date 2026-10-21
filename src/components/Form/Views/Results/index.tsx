@@ -15,7 +15,7 @@ import TopWords from './TopWords';
 import FrequencyCalculator from './FrequencyCalculator';
 
 // redux
-import { clearTexxt, setFormView } from '../../../../redux/actions/form';
+import { setFormView } from '../../../../redux/actions/form';
 
 // constants
 import { FormView } from '../../../../enums/FormView';
@@ -34,8 +34,9 @@ import { IHighligherProps } from '../../../../interfaces/IHighligherProps';
 const wordFrequencyAnalyzerHelper: WordFrequencyAnalyzerHelper = new WordFrequencyAnalyzerHelper();
 
 
-const cleanStateAndGoToDefaultView = (dispatch: any) => {
-    dispatch(clearTexxt());
+// only switch the view: the results keep their content while they fade out, and the
+// Form clears the text once they have left (see its onExitComplete)
+const goToDefaultView = (dispatch: any) => {
     dispatch(setFormView(FormView.DEFAULT_VIEW));
 }
 
@@ -90,7 +91,7 @@ const ResultsView: React.FunctionComponent<IResultsView> = (props: IResultsView)
                 <Button
                     variant="outlined"
                     size="large"
-                    onClick={() => props.dispatch && cleanStateAndGoToDefaultView(props.dispatch)}>
+                    onClick={() => props.dispatch && goToDefaultView(props.dispatch)}>
                     Start again
                 </Button>
             </div>

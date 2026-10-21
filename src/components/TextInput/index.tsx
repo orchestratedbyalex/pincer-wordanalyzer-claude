@@ -40,7 +40,9 @@ const TextInput: React.FunctionComponent<ITextInput> = (props: ITextInput) => {
                 minRows={6}
                 maxRows={14}
                 onChange={(ev) => props.onTextChange(ev.target.value)}
-                defaultValue={String(props.text)}
+                // controlled, so the field always shows the store's text, including when
+                // Start again clears it after the results have faded out
+                value={String(props.text)}
                 inputProps={{ 'aria-describedby': 'word-counter' }}
                 variant="outlined"
             />

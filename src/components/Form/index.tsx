@@ -13,10 +13,20 @@ import { IForm } from '../../interfaces/IForm';
 // factories
 import { FormViewFactory } from '../../factories/FormViewFactory';
 
+// redux
+import { clearTexxt } from '../../redux/actions/form';
+import { FormView } from '../../enums/FormView';
+
 // Styles
 import './Form.css';
 
 const Form: React.FunctionComponent<IForm> = (props: IForm) => {
+    // Start again only switches the view; the text is cleared once the results have finished
+    // leaving and before the default view mounts, so its uncontrolled field starts empty.
+    const onExitComplete = () => {
+        if (props.view === FormView.DEFAULT_VIEW && props.dispatch) props.dispatch(clearTexxt());
+    };
+
     return (
         <main className='formWrapper'>
             {props.loader.isLoading ?
@@ -26,7 +36,7 @@ const Form: React.FunctionComponent<IForm> = (props: IForm) => {
                     <Masthead />
                     <div className='appContent'>
                         {/* the outgoing view finishes its exit before the next one enters */}
-                        <AnimatePresence exitBeforeEnter>
+                        <AnimatePresence exitBeforeEnter onExitComplete={onExitComplete}>
                             <React.Fragment key={props.view}>
                                 {FormViewFactory.create(props.view)}
                             </React.Fragment>
