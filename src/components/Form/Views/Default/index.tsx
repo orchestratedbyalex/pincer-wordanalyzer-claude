@@ -36,8 +36,9 @@ const DefaultView: React.FunctionComponent<IDefaultView> = (props: IDefaultView)
     const totalAmountOfWords: number = wordFrequencyAnalyzerHelper.countWordsInText(props.text);
     const isAnalizedButtonEnabled: boolean = totalAmountOfWords > 0;
     const { entrances } = useMotionPrefs();
-    // the rest of the page follows once the headline has mostly risen
-    const followDelay = HEADLINE_WORDS.length * WORD_STAGGER + 0.2;
+    // the rest of the page follows once the headline has mostly risen; the form block ends
+    // by 0.4 + 0.08 + 0.55 = 1.03s, inside R-13's 1.2s budget
+    const followDelay = HEADLINE_WORDS.length * WORD_STAGGER + 0.08;
     const analyzeButtonRef = React.useRef<HTMLButtonElement>(null);
     const magnetic = useMagnetic(analyzeButtonRef);
 
@@ -68,7 +69,7 @@ const DefaultView: React.FunctionComponent<IDefaultView> = (props: IDefaultView)
                 <motion.div
                     initial={entrances ? { opacity: 0, y: 10 } : false}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: followDelay, ease: EASE }}>
+                    transition={{ duration: 0.55, delay: followDelay, ease: EASE }}>
                     <Typography variant="body1" component="p" className="defaultViewDescription">
                         Add any passage to reveal its most frequent words and explore them in context.
                     </Typography>
@@ -78,7 +79,7 @@ const DefaultView: React.FunctionComponent<IDefaultView> = (props: IDefaultView)
                 className="defaultViewForm"
                 initial={entrances ? { opacity: 0, y: 14 } : false}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: followDelay + 0.1, ease: EASE }}>
+                transition={{ duration: 0.55, delay: followDelay + 0.08, ease: EASE }}>
                 <TextInput onTextChange={(newText: string) => props.dispatch && props.dispatch(setText(newText))} />
                 <div className="analyzeActionWrapper">
                     {/* the wrapper carries the magnetic offset so the button keeps MUI's own styles */}
