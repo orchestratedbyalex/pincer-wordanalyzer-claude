@@ -21,8 +21,11 @@ import { FormView } from '../../enums/FormView';
 import './Form.css';
 
 const Form: React.FunctionComponent<IForm> = (props: IForm) => {
-    // Start again only switches the view; the text is cleared once the results have finished
-    // leaving and before the default view mounts, so its uncontrolled field starts empty.
+    // Start again only switches the view, so the results keep their content while they fade.
+    // framer-motion renders the incoming view before calling onExitComplete, so the text is
+    // cleared just after the default view mounts. That is only safe because TextInput is
+    // controlled: it re-renders empty. A field that read the text only at mount would keep
+    // showing the old passage.
     const onExitComplete = () => {
         if (props.view === FormView.DEFAULT_VIEW && props.dispatch) props.dispatch(clearTexxt());
     };

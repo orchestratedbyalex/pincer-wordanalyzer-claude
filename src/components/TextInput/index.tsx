@@ -41,7 +41,8 @@ const TextInput: React.FunctionComponent<ITextInput> = (props: ITextInput) => {
                 maxRows={14}
                 onChange={(ev) => props.onTextChange(ev.target.value)}
                 // controlled, so the field always shows the store's text, including when
-                // Start again clears it after the results have faded out
+                // Start again clears it after the results have faded out.
+                // This field must stay controlled: the text is cleared after it mounts (see Form).
                 value={String(props.text)}
                 inputProps={{ 'aria-describedby': 'word-counter' }}
                 variant="outlined"
