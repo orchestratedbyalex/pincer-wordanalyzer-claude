@@ -1,0 +1,21 @@
+.masthead {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--color-rule);
+    margin-bottom: var(--space-section);
+}
+
+.mastheadWordmark {
+    margin: 0;
+    color: var(--color-ink);
+}
+
+.mastheadByline {
+    margin: 0;
+    color: var(--color-ink-muted);
+}

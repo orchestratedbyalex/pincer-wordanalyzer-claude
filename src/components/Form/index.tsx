@@ -1,11 +1,10 @@
 import React from 'react';
 // External libs
 import { connect } from 'react-redux';
-import { Typography } from '@material-ui/core';
 
 // local componets
 import AppLoader from '../Loader';
-import HeroTitle from '../HeroTitle';
+import Masthead from '../Masthead';
 
 // interfaces
 import { IForm } from '../../interfaces/IForm';
@@ -23,12 +22,7 @@ const Form: React.FunctionComponent<IForm> = (props: IForm) => {
                 <AppLoader />
                 :
                 <>
-                    <header className='appHeader'>
-                        <HeroTitle />
-                        <Typography variant="body2" component="p" className="appByline">
-                            Showcase by Alexander Gomez
-                        </Typography>
-                    </header>
+                    <Masthead />
                     <div className='appContent'>
                         {FormViewFactory.create(props.view)}
                     </div>
