@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme: Theme) =>
       minHeight: 'min(320px, 60vh)',
       justifyContent: 'center',
       alignItems: 'center',
+      color: 'var(--color-ink)',
     },
   }),
 );
@@ -18,7 +19,7 @@ export default function AppLoader() {
 
   return (
     <div className={classes.root} role="status" aria-label="Loading WordAnalyzer">
-      <CircularProgress color="primary" size={40} thickness={4} />
+      <CircularProgress color="inherit" size={32} thickness={2} />
     </div>
   );
 }

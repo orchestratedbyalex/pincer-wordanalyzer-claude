@@ -1,5 +1,4 @@
-import { Avatar, Divider, List, ListItem, ListItemIcon, ListItemText, Paper, Typography } from '@material-ui/core';
-import { TrendingUp } from '@material-ui/icons';
+import { List, Typography } from '@material-ui/core';
 import React from 'react';
 
 // external libs
@@ -8,9 +7,12 @@ import { connect } from 'react-redux';
 //local libs
 import { WordFrequencyAnalyzerHelper } from '../../../../../lib/WordFrecuencynalyzerHelper';
 
+// local components
+import IndexEntry from '../IndexEntry';
+import SectionRule from '../../../../../motion/SectionRule';
+
 // interfaces
 import { IWordFrequency } from '../../../../../lib/interfaces/IWordFrequency';
-import { top20Colors } from '../../../../../constants/TopFrecuencyColors';
 
 
 //styles
@@ -33,41 +35,26 @@ const HighestFrequencyWords: React.FunctionComponent<IHighestFrequencyWords> = (
     const mostFrequentWords: IWordFrequency[] = wordFrequencyAnalyzerHelper.getMostFrecuentWordsFromText(props.text);
 
     return (
-        <Paper component="section" elevation={0} className="detailsWrapper" aria-labelledby="highest-words-heading">
-            <div className="detailsHeader">
-                <div className="resultIcon" aria-hidden="true">
-                    <TrendingUp />
-                </div>
-                <Typography id="highest-words-heading" variant="h6" component="h3" className="detailsTitle">
-                    Highest frequency
-                </Typography>
-            </div>
-            <Divider />
+        <section className="detailsWrapper" aria-labelledby="highest-words-heading">
+            <SectionRule delay={0.08} />
+            <Typography id="highest-words-heading" variant="h3" component="h3" className="detailsTitle">
+                Highest frequency
+            </Typography>
             <List
                 component="nav"
                 aria-labelledby="highest-words-heading"
                 className="resultList" >
-                <Typography className='frequencyTitle' component="p">Frequency</Typography>
                 {
-                    mostFrequentWords.map((word, index) => {
-                        return (
-                            <ListItem
-                                button
-                                aria-label={`${word.getWord()}, ${word.getFrequency()} occurrences`}
-                                key={word.getWord() + "_" + word.getFrequency() + "__li"}
-                                onClick={() => onClickListItem(word.getWord(), props.dispatch)}>
-                                <ListItemIcon>
-                                    <Avatar className="frequencyBadge" style={{ backgroundColor: top20Colors[index % top20Colors.length] }}>
-                                        {word.getFrequency()}
-                                    </Avatar>
-                                </ListItemIcon>
-                                <ListItemText primary={word.getWord()} />
-                            </ListItem>
-                        )
-                    })
+                    mostFrequentWords.map((word, index) => (
+                        <IndexEntry
+                            key={word.getWord() + "_" + word.getFrequency() + "__li"}
+                            rank={index + 1}
+                            word={word}
+                            onSelect={(selected) => onClickListItem(selected, props.dispatch)} />
+                    ))
                 }
             </List>
-        </Paper>
+        </section>
     );
 };
 

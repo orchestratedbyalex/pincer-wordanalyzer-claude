@@ -1,21 +1,30 @@
 :root {
-  --color-page: #f5f5f7;
-  --color-page-accent: #eef5ff;
-  --color-surface: #ffffff;
-  --color-surface-muted: #fbfbfd;
-  --color-text: #1d1d1f;
-  --color-text-muted: #5f5f63;
-  --color-border: rgba(29, 29, 31, 0.12);
-  --color-accent: #0066cc;
-  --color-accent-strong: #004f9e;
-  --color-focus: #0066cc;
-  --shadow-surface: 0 18px 60px rgba(29, 29, 31, 0.08);
-  --shadow-control: 0 8px 24px rgba(29, 29, 31, 0.08);
-  --radius-small: 10px;
-  --radius-medium: 14px;
-  --radius-large: 22px;
-  --space-page: clamp(20px, 5vw, 72px);
-  --space-section: clamp(24px, 4vw, 48px);
+  /* Editorial palette: ivory paper, near-black ink. */
+  --color-page: #F6F3EE;
+  --color-ink: #111111;
+  --color-ink-muted: #5E5A54;
+  --color-field-border: #8A7F6E;
+  --color-highlight: #F1DDD6;
+
+  /* The signature accent: oxblood with brass details, used with restraint. */
+  --color-accent: #7A1F2B;
+  --color-accent-deep: #5E1620;
+  --color-brass: #8A6A2F;
+  --color-rule: rgba(17, 17, 17, 0.14);
+  --color-ink-wash: rgba(17, 17, 17, 0.05);
+
+  /* Apple's radii, measured on apple.com: boxes 18px, controls 12px. */
+  --radius-box: 18px;
+  --radius-control: 12px;
+
+  /* One high-contrast serif for display, the system sans for function. */
+  --font-display: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI",
+    sans-serif;
+  --tracking-caps: 0.16em;
+
+  --space-page: clamp(16px, 6vw, 96px);
+  --space-section: clamp(32px, 5vw, 72px);
   --motion-fast: 180ms;
   --motion-medium: 260ms;
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -32,14 +41,11 @@ html {
 body {
   min-width: 0;
   margin: 0;
-  color: var(--color-text);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
-    "Segoe UI", sans-serif;
+  color: var(--color-ink);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background:
-    radial-gradient(circle at 50% -20%, var(--color-page-accent) 0, transparent 42rem),
-    var(--color-page);
+  background: var(--color-page);
 }
 
 button,
@@ -49,13 +55,37 @@ textarea {
 }
 
 ::selection {
-  color: var(--color-text);
-  background: rgba(0, 102, 204, 0.18);
+  color: var(--color-ink);
+  background: var(--color-highlight);
+}
+
+/* Hidden on screen, still announced by screen readers. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Apple's continuous corners where the browser can draw them; plain radii elsewhere. */
+@supports (corner-shape: squircle) {
+  .MuiButton-root,
+  .MuiOutlinedInput-root,
+  .MuiListItem-button,
+  [data-corner="box"],
+  [data-corner="control"] {
+    corner-shape: squircle;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

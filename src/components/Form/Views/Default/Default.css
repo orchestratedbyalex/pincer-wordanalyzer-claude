@@ -1,46 +1,76 @@
-.textFieldContainer {
+.defaultView {
     display: flex;
     flex-direction: column;
-    gap: clamp(22px, 4vw, 34px);
-    width: min(100%, 760px);
+    gap: clamp(28px, 4vw, 48px);
+    width: min(100%, 880px);
     min-width: 0;
-    padding: clamp(22px, 5vw, 48px);
-    color: var(--color-text);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-large);
-    box-shadow: var(--shadow-surface);
+    color: var(--color-ink);
 }
 
+/* positioned and isolated so the ambient tint can sit behind the headline */
 .defaultViewHeader {
+    position: relative;
+    isolation: isolate;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: clamp(16px, 2vw, 24px);
 }
 
 .defaultViewTitle {
-    color: var(--color-text);
-    font-size: clamp(1.55rem, 4vw, 2.15rem);
-    font-weight: 650;
-    letter-spacing: -0.025em;
-    line-height: 1.15;
+    margin: 0;
+    color: var(--color-ink);
+    overflow-wrap: break-word;
+}
+
+/* inline-block so each word can rise on its own transform */
+.headlineWord {
+    display: inline-block;
+}
+
+.defaultViewForm {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(28px, 4vw, 48px);
 }
 
 .defaultViewDescription {
-    max-width: 600px;
+    max-width: 52ch;
     margin: 0;
-    color: var(--color-text-muted);
+    color: var(--color-ink-muted);
+    font-size: 1.125rem;
     line-height: 1.6;
 }
 
 .analyzeActionWrapper {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     width: 100%;
 }
 
+.analyzeButton.MuiButton-sizeLarge {
+    min-height: 52px;
+    padding: 12px 28px;
+    font-size: 1rem;
+}
+
+.analyzeArrow {
+    display: inline-block;
+    margin-left: 14px;
+    font-weight: 300;
+    transition: transform var(--motion-fast) var(--motion-ease);
+}
+
+.analyzeButton:not(.Mui-disabled):hover .analyzeArrow {
+    transform: translateX(3px);
+}
+
+.analyzeMagnet {
+    display: inline-flex;
+}
+
 @media (max-width: 480px) {
-    .analyzeActionWrapper .MuiButton-root {
+    .analyzeMagnet,
+    .analyzeButton.MuiButton-root {
         width: 100%;
     }
 }

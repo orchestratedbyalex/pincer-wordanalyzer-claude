@@ -1,10 +1,9 @@
 import React from 'react';
 
 //External libs
-import { Button, Paper, Typography } from '@material-ui/core';
-import { motion, useReducedMotion } from 'framer-motion';
+import { Button, Typography } from '@material-ui/core';
+import { motion } from 'framer-motion';
 import { connect } from 'react-redux';
-import { Refresh, Subject } from '@material-ui/icons';
 import Highlighter from "react-highlight-words";
 
 // local libs
@@ -16,13 +15,17 @@ import TopWords from './TopWords';
 import FrequencyCalculator from './FrequencyCalculator';
 
 // redux
-import { clearTexxt, setFormView } from '../../../../redux/actions/form';
+import { setFormView } from '../../../../redux/actions/form';
 
 // constants
 import { FormView } from '../../../../enums/FormView';
 
 // interfaces
 import { IResultsView } from '../../../../interfaces/IResultsView';
+
+// motion
+import { EASE, useMotionPrefs } from '../../../../motion/MotionContext';
+import WordRibbon from '../../../../motion/WordRibbon';
 
 // styles
 import './Results.css';
@@ -31,8 +34,9 @@ import { IHighligherProps } from '../../../../interfaces/IHighligherProps';
 const wordFrequencyAnalyzerHelper: WordFrequencyAnalyzerHelper = new WordFrequencyAnalyzerHelper();
 
 
-const cleanStateAndGoToDefaultView = (dispatch: any) => {
-    dispatch(clearTexxt());
+// only switch the view: the results keep their content while they fade out, and the
+// Form clears the text once they have left (see its onExitComplete)
+const goToDefaultView = (dispatch: any) => {
     dispatch(setFormView(FormView.DEFAULT_VIEW));
 }
 
@@ -44,49 +48,40 @@ const setHighlighterTextProps = (props: IResultsView): IHighligherProps => {
 
 // component that contains rendered text and calculation widgets
 const ResultsView: React.FunctionComponent<IResultsView> = (props: IResultsView) => {
-    const shouldReduceMotion = useReducedMotion();
+    const { entrances } = useMotionPrefs();
 
     return (
         <motion.section
             aria-labelledby="results-title"
-            initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+            initial={entrances ? { opacity: 0, y: 12 } : false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }}
+            exit={entrances ? { opacity: 0, y: -8, transition: { duration: 0.24, ease: EASE } } : undefined}
+            transition={{ duration: 0.4, ease: EASE }}
             className='resultsContainer'>
-            <header className="resultsHeader">
-                <div>
-                    <Typography id="results-title" variant="h4" component="h2" className="resultsTitle">
-                        Your word profile
-                    </Typography>
-                    <Typography variant="body1" component="p" className="resultsDescription">
-                        Review the strongest patterns, then select any word to see it in context.
-                    </Typography>
-                </div>
-            </header>
+            {/* kept for screen readers so the page outline stays intact; not shown on screen */}
+            <h2 id="results-title" className="visually-hidden">Your word profile</h2>
 
-            <div className="paperWrapper">
-                <div className="resultIcon" aria-hidden="true">
-                    <Subject />
+            <section className="sourceText" aria-labelledby="source-text-title">
+                <Typography id="source-text-title" variant="overline" component="h3" className="sourceTextTitle">
+                    Analyzed text
+                </Typography>
+                <div
+                    className="analyzedText"
+                    data-motion={entrances ? 'on' : 'off'}
+                    tabIndex={0}
+                    aria-label="Analyzed text with selected words highlighted">
+                    {/* keyed by the selection so the marks remount and the sweep replays each time */}
+                    <Highlighter
+                        key={props.wordToCalculateFrequency}
+                        highlightClassName="YourHighlightClass"
+                        searchWords={wordFrequencyAnalyzerHelper.getHighlightedWordsInText(props.text, props.wordToCalculateFrequency)}
+                        autoEscape={true}
+                        caseSensitive={true}
+                        textToHighlight={setHighlighterTextProps(props).textToHighlight}
+                    />
                 </div>
-                <Paper
-                    component="section"
-                    elevation={0}
-                    className='paperContainer'
-                    aria-labelledby="source-text-title">
-                    <Typography id="source-text-title" variant="overline" component="h3" className="sourceTextTitle">
-                        Analyzed text
-                    </Typography>
-                    <div className="analyzedText" tabIndex={0} aria-label="Analyzed text with selected words highlighted">
-                        <Highlighter
-                            highlightClassName="YourHighlightClass"
-                            searchWords={wordFrequencyAnalyzerHelper.getHighlightedWordsInText(props.text, props.wordToCalculateFrequency)}
-                            autoEscape={true}
-                            caseSensitive={true}
-                            textToHighlight={setHighlighterTextProps(props).textToHighlight}
-                        />
-                    </div>
-                </Paper>
-            </div>
+            </section>
+            <WordRibbon text={props.text} />
             <div className="detailedResultsWrapper">
                 <TopWords />
                 <HighestFrecuencyWords />
@@ -94,11 +89,9 @@ const ResultsView: React.FunctionComponent<IResultsView> = (props: IResultsView)
             </div>
             <div className="startAgainButtonWraper">
                 <Button
-                    variant="contained"
-                    color="primary"
+                    variant="outlined"
                     size="large"
-                    onClick={() => props.dispatch && cleanStateAndGoToDefaultView(props.dispatch)}
-                    endIcon={<Refresh />}>
+                    onClick={() => props.dispatch && goToDefaultView(props.dispatch)}>
                     Start again
                 </Button>
             </div>

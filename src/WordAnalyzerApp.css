@@ -3,13 +3,11 @@
   min-height: 100vh;
   min-height: 100dvh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: var(--space-page);
-}
-
-@media (max-width: 600px), (max-height: 680px) {
-  .AppWrapper {
-    align-items: flex-start;
-  }
+  padding: clamp(24px, 4vw, 48px) var(--space-page) var(--space-section);
+  /* the ambient tint may bleed into the margins but never past the viewport;
+     clip (not hidden) keeps this from becoming a scroll container where supported */
+  overflow-x: hidden;
+  overflow-x: clip;
 }
