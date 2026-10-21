@@ -4,9 +4,6 @@
   "private": true,
   "dependencies": {
     "@fontsource/cormorant-garamond": "5.3.0",
-    "@fontsource/dancing-script": "^4.2.2",
-    "@fontsource/michroma": "^5.3.0",
-    "@fontsource/special-elite": "^4.2.2",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@testing-library/jest-dom": "^5.11.4",
