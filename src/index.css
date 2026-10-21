@@ -12,6 +12,12 @@
   --radius-box: 18px;
   --radius-control: 12px;
 
+  /* One high-contrast serif for display, the system sans for function. */
+  --font-display: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI",
+    sans-serif;
+  --tracking-caps: 0.16em;
+
   --space-page: clamp(16px, 6vw, 96px);
   --space-section: clamp(32px, 5vw, 72px);
   --motion-fast: 180ms;
@@ -42,8 +48,7 @@ body {
   min-width: 0;
   margin: 0;
   color: var(--color-ink);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
-    "Segoe UI", sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--color-page);

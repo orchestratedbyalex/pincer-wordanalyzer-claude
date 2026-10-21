@@ -12,14 +12,9 @@ const wash = 'var(--color-ink-wash)';
 const fieldBorder = 'var(--color-field-border)';
 const focusRing = { outline: `2px solid ${ink}`, outlineOffset: 3 };
 
-const systemFontFamily = [
-  '-apple-system',
-  'BlinkMacSystemFont',
-  '"SF Pro Text"',
-  '"SF Pro Display"',
-  '"Segoe UI"',
-  'sans-serif',
-].join(',');
+const displayFont = 'var(--font-display)';
+const bodyFont = 'var(--font-body)';
+const display = { fontFamily: displayFont, fontWeight: 400, letterSpacing: '-0.01em' };
 
 const theme = createTheme({
   shadows: Array(25).fill('none') as Shadows,
@@ -27,11 +22,28 @@ const theme = createTheme({
     borderRadius: 0,
   },
   typography: {
-    fontFamily: systemFontFamily,
+    fontFamily: bodyFont,
+    h1: { ...display, fontSize: '1.75rem', lineHeight: 1.1 },
+    h2: { ...display, fontSize: 'clamp(2.75rem, 8vw, 6rem)', lineHeight: 1 },
+    h3: { ...display, fontSize: '1.625rem', lineHeight: 1.15 },
+    h4: { ...display },
+    h5: { ...display },
+    h6: { ...display },
+    body1: { fontFamily: bodyFont },
+    body2: { fontFamily: bodyFont },
     button: {
+      fontFamily: bodyFont,
       fontWeight: 500,
       letterSpacing: '0.02em',
       textTransform: 'none',
+    },
+    overline: {
+      fontFamily: bodyFont,
+      fontSize: '0.6875rem',
+      fontWeight: 500,
+      letterSpacing: 'var(--tracking-caps)',
+      lineHeight: 1.6,
+      textTransform: 'uppercase',
     },
   },
   props: {
