@@ -13,6 +13,8 @@ import { clearFrequencyState, setFormView, setText } from '../../../../redux/act
 import { IDefaultView } from '../../../../lib/interfaces/IDefaultView';
 // motion
 import { EASE, useMotionPrefs } from '../../../../motion/MotionContext';
+import AmbientTint from '../../../../motion/AmbientTint';
+import { useMagnetic } from '../../../../motion/useMagnetic';
 //styles
 import './Default.css';
 import { WordFrequencyAnalyzerHelper } from '../../../../lib/WordFrecuencynalyzerHelper';
@@ -36,6 +38,8 @@ const DefaultView: React.FunctionComponent<IDefaultView> = (props: IDefaultView)
     const { entrances } = useMotionPrefs();
     // the rest of the page follows once the headline has mostly risen
     const followDelay = HEADLINE_WORDS.length * WORD_STAGGER + 0.2;
+    const analyzeButtonRef = React.useRef<HTMLButtonElement>(null);
+    const magnetic = useMagnetic(analyzeButtonRef);
 
     return (
         <motion.section
@@ -46,6 +50,7 @@ const DefaultView: React.FunctionComponent<IDefaultView> = (props: IDefaultView)
             transition={{ duration: 0.3, ease: EASE }}
             className='defaultView'>
             <div className="defaultViewHeader">
+                <AmbientTint />
                 <Typography id="input-view-title" variant="h2" component="h2" className="defaultViewTitle">
                     {HEADLINE_WORDS.map((word, index) => (
                         <React.Fragment key={word}>
@@ -76,15 +81,23 @@ const DefaultView: React.FunctionComponent<IDefaultView> = (props: IDefaultView)
                 transition={{ duration: 0.6, delay: followDelay + 0.1, ease: EASE }}>
                 <TextInput onTextChange={(newText: string) => props.dispatch && props.dispatch(setText(newText))} />
                 <div className="analyzeActionWrapper">
-                    <Button
-                        disabled={!isAnalizedButtonEnabled}
-                        variant="contained"
-                        size="large"
-                        className="analyzeButton"
-                        onClick={() => props.dispatch && cleanFrequencyStateAndGoToResultsView(props.dispatch)}>
-                        Analyze
-                        <span className="analyzeArrow" aria-hidden="true">→</span>
-                    </Button>
+                    {/* the wrapper carries the magnetic offset so the button keeps MUI's own styles */}
+                    <motion.div
+                        className="analyzeMagnet"
+                        style={{ x: magnetic.x, y: magnetic.y }}
+                        onMouseMove={magnetic.onMouseMove}
+                        onMouseLeave={magnetic.onMouseLeave}>
+                        <Button
+                            ref={analyzeButtonRef}
+                            disabled={!isAnalizedButtonEnabled}
+                            variant="contained"
+                            size="large"
+                            className="analyzeButton"
+                            onClick={() => props.dispatch && cleanFrequencyStateAndGoToResultsView(props.dispatch)}>
+                            Analyze
+                            <span className="analyzeArrow" aria-hidden="true">→</span>
+                        </Button>
+                    </motion.div>
                 </div>
             </motion.div>
         </motion.section>

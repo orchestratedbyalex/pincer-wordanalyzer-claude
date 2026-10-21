@@ -25,6 +25,7 @@ import { IResultsView } from '../../../../interfaces/IResultsView';
 
 // motion
 import { EASE, useMotionPrefs } from '../../../../motion/MotionContext';
+import WordRibbon from '../../../../motion/WordRibbon';
 
 // styles
 import './Results.css';
@@ -77,6 +78,7 @@ const ResultsView: React.FunctionComponent<IResultsView> = (props: IResultsView)
                     />
                 </div>
             </section>
+            <WordRibbon text={props.text} />
             <div className="detailedResultsWrapper">
                 <TopWords />
                 <HighestFrecuencyWords />

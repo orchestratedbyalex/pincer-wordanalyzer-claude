@@ -1,0 +1,113 @@
+/* Ambient motion lives here, apart from the view stylesheets: the tint is the one gradient
+   the spec allows (R-14). Every loop pauses through data-state="paused", and the global
+   reduced-motion rule in index.css stops them too. */
+
+/* --- The Motion toggle ----------------------------------------------------- */
+.motionToggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 32px;
+    padding: 4px 12px;
+    color: var(--color-ink);
+    background: transparent;
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-control);
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color var(--motion-fast) var(--motion-ease);
+}
+
+.motionToggle:hover {
+    border-color: var(--color-ink);
+}
+
+.motionToggle:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+}
+
+.motionToggle[aria-disabled="true"] {
+    color: var(--color-ink-muted);
+    cursor: not-allowed;
+}
+
+.motionToggleDot {
+    width: 7px;
+    height: 7px;
+    border: 1px solid var(--color-ink);
+    border-radius: 1px;
+    transition: background-color var(--motion-fast) var(--motion-ease);
+}
+
+.motionToggleDot[data-on="true"] {
+    background-color: var(--color-ink);
+}
+
+/* --- The drifting tint behind the headline --------------------------------- */
+.ambientTint {
+    position: absolute;
+    inset: -12% -8%;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 45% 55% at 28% 45%, var(--color-highlight), transparent 70%),
+        radial-gradient(ellipse 35% 45% at 72% 60%, color-mix(in srgb, var(--color-brass) 16%, transparent), transparent 70%);
+    opacity: 0.75;
+    animation: tintDrift 26s ease-in-out infinite alternate;
+}
+
+.ambientTint[data-state="paused"] {
+    animation-play-state: paused;
+}
+
+@keyframes tintDrift {
+    from { transform: translate3d(-3%, -2%, 0) scale(1); }
+    to { transform: translate3d(3%, 2%, 0) scale(1.06); }
+}
+
+/* --- The ribbon of top words ----------------------------------------------- */
+.wordRibbon {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    padding: 14px 0;
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+}
+
+.wordRibbonTrack {
+    display: flex;
+    width: max-content;
+    animation: ribbonScroll 48s linear infinite;
+}
+
+.wordRibbon[data-state="paused"] .wordRibbonTrack,
+.wordRibbon:hover .wordRibbonTrack {
+    animation-play-state: paused;
+}
+
+.wordRibbonWord {
+    padding: 0 0.9em;
+    color: var(--color-ink-muted);
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-style: italic;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.wordRibbonWord::after {
+    content: '·';
+    padding-left: 1.8em;
+    font-style: normal;
+}
+
+@keyframes ribbonScroll {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-50%, 0, 0); }
+}
