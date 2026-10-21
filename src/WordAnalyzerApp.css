@@ -6,4 +6,8 @@
   align-items: flex-start;
   justify-content: center;
   padding: clamp(24px, 4vw, 48px) var(--space-page) var(--space-section);
+  /* the ambient tint may bleed into the margins but never past the viewport;
+     clip (not hidden) keeps this from becoming a scroll container where supported */
+  overflow-x: hidden;
+  overflow-x: clip;
 }
