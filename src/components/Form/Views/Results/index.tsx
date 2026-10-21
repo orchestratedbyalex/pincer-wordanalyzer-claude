@@ -52,14 +52,8 @@ const ResultsView: React.FunctionComponent<IResultsView> = (props: IResultsView)
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: shouldReduceMotion ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }}
             className='resultsContainer'>
-            <header className="resultsHeader">
-                <Typography id="results-title" variant="h2" component="h2" className="resultsTitle">
-                    Your word profile
-                </Typography>
-                <Typography variant="body1" component="p" className="resultsDescription">
-                    Review the strongest patterns, then select any word to see it in context.
-                </Typography>
-            </header>
+            {/* kept for screen readers so the page outline stays intact; not shown on screen */}
+            <h2 id="results-title" className="visually-hidden">Your word profile</h2>
 
             <section className="sourceText" aria-labelledby="source-text-title">
                 <Typography id="source-text-title" variant="overline" component="h3" className="sourceTextTitle">
