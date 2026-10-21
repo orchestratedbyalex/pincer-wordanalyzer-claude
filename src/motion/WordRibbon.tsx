@@ -29,6 +29,14 @@ const WordRibbon: React.FunctionComponent<{ text: string }> = ({ text }) => {
             if (needed !== repeats) setRepeats(needed);
         };
         measure();
+        // the italic face loads lazily and swaps in narrower than its fallback, so watch the
+        // copy's size (and the ribbon's) rather than only the window
+        if (typeof ResizeObserver === 'function') {
+            const observer = new ResizeObserver(measure);
+            if (ribbonRef.current) observer.observe(ribbonRef.current);
+            if (copyRef.current) observer.observe(copyRef.current);
+            return () => observer.disconnect();
+        }
         window.addEventListener('resize', measure);
         return () => window.removeEventListener('resize', measure);
     }, [repeats, text]);
