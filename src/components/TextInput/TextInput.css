@@ -6,23 +6,26 @@
     gap: 10px;
 }
 
-.textInput .MuiOutlinedInput-root {
+.textInputLabel {
+    color: var(--color-ink-muted);
+}
+
+.textInput .MuiOutlinedInput-multiline {
     align-items: flex-start;
+    padding: 22px 24px;
 }
 
 .textInput textarea {
-    color: var(--color-text);
-    line-height: 1.6;
+    color: var(--color-ink);
+    font-size: 1.0625rem;
+    line-height: 1.65;
     resize: vertical;
 }
 
 .wordCounterParagraph {
     min-height: 20px;
     margin: 0;
-    padding-right: 4px;
-    color: var(--color-text-muted);
-    font-size: 0.8rem;
+    color: var(--color-ink-muted);
     font-variant-numeric: tabular-nums;
-    font-weight: 500;
     text-align: end;
 }

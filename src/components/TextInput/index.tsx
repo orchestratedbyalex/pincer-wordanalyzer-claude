@@ -17,6 +17,8 @@ import './TextInput.css';
 
 const wordFrequencyAnalyzerHelper: WordFrequencyAnalyzerHelper = new WordFrequencyAnalyzerHelper();
 
+const TEXT_FIELD_ID = 'word-analyzer-text-field';
+
 // component used to fill in word to calculate frequency
 const TextInput: React.FunctionComponent<ITextInput> = (props: ITextInput) => {
 
@@ -25,15 +27,18 @@ const TextInput: React.FunctionComponent<ITextInput> = (props: ITextInput) => {
 
     return (
         <div className='textInputWrapper'>
+            {/* a static label above the field instead of MUI's floating one */}
+            <Typography variant="overline" component="label" htmlFor={TEXT_FIELD_ID} className="textInputLabel">
+                Fill in your text…
+            </Typography>
             <TextField
                 autoComplete="off"
                 className="textInput"
                 fullWidth
-                id="word-analyzer-text-field"
-                label="Fill in your text..."
+                id={TEXT_FIELD_ID}
                 multiline
-                rows={6}
-                rowsMax={12}
+                minRows={6}
+                maxRows={14}
                 onChange={(ev) => props.onTextChange(ev.target.value)}
                 defaultValue={String(props.text)}
                 inputProps={{ 'aria-describedby': 'word-counter' }}
@@ -41,6 +46,7 @@ const TextInput: React.FunctionComponent<ITextInput> = (props: ITextInput) => {
             />
             <Typography
                 id="word-counter"
+                variant="overline"
                 className='wordCounterParagraph'
                 component="p"
                 aria-live="polite"

@@ -1,7 +1,6 @@
 import React from 'react';
 // External libs
 import { Button, Typography } from '@material-ui/core';
-import { TextFields } from '@material-ui/icons';
 import { motion, useReducedMotion } from 'framer-motion';
 import { connect } from 'react-redux';
 //local components
@@ -37,9 +36,9 @@ const DefaultView: React.FunctionComponent<IDefaultView> = (props: IDefaultView)
             initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: shouldReduceMotion ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }}
-            className='textFieldContainer'>
+            className='defaultView'>
             <div className="defaultViewHeader">
-                <Typography id="input-view-title" variant="h4" component="h2" className="defaultViewTitle">
+                <Typography id="input-view-title" variant="h2" component="h2" className="defaultViewTitle">
                     See what stands out.
                 </Typography>
                 <Typography variant="body1" component="p" className="defaultViewDescription">
@@ -51,11 +50,11 @@ const DefaultView: React.FunctionComponent<IDefaultView> = (props: IDefaultView)
                 <Button
                     disabled={!isAnalizedButtonEnabled}
                     variant="contained"
-                    color="primary"
                     size="large"
-                    onClick={() => props.dispatch && cleanFrequencyStateAndGoToResultsView(props.dispatch)}
-                    endIcon={<TextFields />}>
+                    className="analyzeButton"
+                    onClick={() => props.dispatch && cleanFrequencyStateAndGoToResultsView(props.dispatch)}>
                     Analyze
+                    <span className="analyzeArrow" aria-hidden="true">→</span>
                 </Button>
             </div>
         </motion.section>
