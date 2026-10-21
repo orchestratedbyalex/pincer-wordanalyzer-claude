@@ -1,4 +1,16 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
+import { Shadows } from '@material-ui/core/styles/shadows';
+
+// MUI v4 computes with palette colors (fade, darken, getContrastText) and throws on var(),
+// so the palette stays at MUI's defaults and every component is restyled through overrides
+// that read the tokens defined in index.css. No color value lives in this file.
+const ink = 'var(--color-ink)';
+const inkMuted = 'var(--color-ink-muted)';
+const page = 'var(--color-page)';
+const rule = 'var(--color-rule)';
+const wash = 'var(--color-ink-wash)';
+const fieldBorder = 'var(--color-field-border)';
+const focusRing = { outline: `2px solid ${ink}`, outlineOffset: 3 };
 
 const systemFontFamily = [
   '-apple-system',
@@ -9,93 +21,158 @@ const systemFontFamily = [
   'sans-serif',
 ].join(',');
 
-const theme = createMuiTheme({
-  palette: {
-    type: 'light',
-    primary: {
-      main: '#0066cc',
-      dark: '#004f9e',
-      contrastText: '#ffffff',
-    },
-    background: {
-      default: '#f5f5f7',
-      paper: '#ffffff',
-    },
-    text: {
-      primary: '#1d1d1f',
-      secondary: '#5f5f63',
-    },
-    divider: 'rgba(29, 29, 31, 0.12)',
+const theme = createTheme({
+  shadows: Array(25).fill('none') as Shadows,
+  shape: {
+    borderRadius: 0,
   },
   typography: {
     fontFamily: systemFontFamily,
-    h1: {
-      fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-      fontWeight: 650,
-      letterSpacing: '-0.04em',
-      lineHeight: 1.05,
-    },
-    h2: {
-      fontWeight: 650,
-      letterSpacing: '-0.025em',
-    },
     button: {
-      fontWeight: 600,
-      letterSpacing: '-0.01em',
+      fontWeight: 500,
+      letterSpacing: '0.02em',
       textTransform: 'none',
     },
   },
-  shape: {
-    borderRadius: 14,
-  },
   props: {
+    MuiButtonBase: {
+      disableRipple: true,
+    },
     MuiButton: {
       disableElevation: true,
     },
+    MuiPaper: {
+      elevation: 0,
+    },
   },
   overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        body: {
+          backgroundColor: page,
+          color: ink,
+        },
+      },
+    },
     MuiButton: {
       root: {
         minHeight: 44,
-        borderRadius: 12,
-        padding: '10px 20px',
-        transition: 'background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease',
-        '&:focus-visible': {
-          outline: '3px solid #0066cc',
-          outlineOffset: 2,
+        padding: '10px 22px',
+        color: ink,
+        borderRadius: 'var(--radius-control)',
+        transition: 'background-color 180ms ease, color 180ms ease, border-color 180ms ease',
+        '&:hover': {
+          backgroundColor: wash,
+        },
+        '&:focus-visible': focusRing,
+        '&$disabled': {
+          color: inkMuted,
+          cursor: 'not-allowed',
+          pointerEvents: 'auto',
+        },
+      },
+      contained: {
+        color: page,
+        backgroundColor: ink,
+        '&:hover': {
+          backgroundColor: ink,
+          opacity: 0.88,
+        },
+        '&$disabled': {
+          color: inkMuted,
+          backgroundColor: 'transparent',
+          border: `1px solid ${rule}`,
         },
       },
       containedPrimary: {
+        color: page,
+        backgroundColor: ink,
         '&:hover': {
-          backgroundColor: '#004f9e',
+          backgroundColor: ink,
         },
+      },
+      outlined: {
+        color: ink,
+        border: `1px solid ${ink}`,
+        '&$disabled': {
+          border: `1px solid ${rule}`,
+        },
+      },
+      outlinedPrimary: {
+        color: ink,
+        border: `1px solid ${ink}`,
+        '&:hover': {
+          border: `1px solid ${ink}`,
+          backgroundColor: wash,
+        },
+      },
+      textPrimary: {
+        color: ink,
+        '&:hover': {
+          backgroundColor: wash,
+        },
+      },
+    },
+    MuiInputBase: {
+      root: {
+        color: ink,
       },
     },
     MuiOutlinedInput: {
       root: {
-        borderRadius: 12,
-        backgroundColor: '#ffffff',
-        transition: 'box-shadow 180ms ease',
-        '&.Mui-focused': {
-          boxShadow: '0 0 0 3px rgba(0, 102, 204, 0.16)',
+        borderRadius: 'var(--radius-box)',
+        backgroundColor: 'transparent',
+        '&:hover $notchedOutline': {
+          borderColor: ink,
+        },
+        '&$focused $notchedOutline': {
+          borderColor: ink,
+          borderWidth: 2,
         },
       },
       notchedOutline: {
-        borderColor: 'rgba(29, 29, 31, 0.18)',
+        borderColor: fieldBorder,
+      },
+    },
+    MuiFormLabel: {
+      root: {
+        color: inkMuted,
+        '&$focused': {
+          color: ink,
+        },
       },
     },
     MuiPaper: {
+      root: {
+        color: ink,
+        backgroundColor: 'transparent',
+      },
       rounded: {
-        borderRadius: 18,
+        borderRadius: 0,
+      },
+    },
+    MuiDivider: {
+      root: {
+        backgroundColor: rule,
       },
     },
     MuiListItem: {
       button: {
-        borderRadius: 10,
-        '&:focus-visible': {
-          outline: '3px solid #0066cc',
-          outlineOffset: -2,
+        borderRadius: 'var(--radius-control)',
+        '&:hover': {
+          backgroundColor: wash,
         },
+        '&:focus-visible': { ...focusRing, outlineOffset: -2 },
+      },
+    },
+    MuiTypography: {
+      colorTextSecondary: {
+        color: inkMuted,
+      },
+    },
+    MuiCircularProgress: {
+      root: {
+        color: ink,
       },
     },
   },
