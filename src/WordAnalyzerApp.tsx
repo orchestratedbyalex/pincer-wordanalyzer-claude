@@ -1,6 +1,7 @@
 // local
 import Form from './components/Form';
 import theme from './theme';
+import { MotionProvider } from './motion/MotionContext';
 
 // redux
 import { Provider } from 'react-redux';
@@ -17,10 +18,12 @@ function WordAnalyzerApp() {
   return (
     <Provider store={configureStore()}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <div className='AppWrapper'>
-          <Form />
-        </div>
+        <MotionProvider>
+          <CssBaseline />
+          <div className='AppWrapper'>
+            <Form />
+          </div>
+        </MotionProvider>
       </ThemeProvider>
     </Provider>
   );

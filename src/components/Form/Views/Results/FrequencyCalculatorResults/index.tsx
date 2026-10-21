@@ -1,6 +1,11 @@
 import React from 'react';
 // External libs
 import { Typography } from '@material-ui/core';
+import { motion } from 'framer-motion';
+
+// motion
+import CountUp from '../../../../../motion/CountUp';
+import { EASE, useMotionPrefs } from '../../../../../motion/MotionContext';
 
 // styles
 import '../Results.css';
@@ -12,6 +17,7 @@ const isSafeImageUrl = (url: string): boolean => /^https:\/\//i.test(url);
 // component that renders frequency calculator widget results
 const FrequencyCalculatorResults: React.FunctionComponent<IFrequencyCalculatorResults> = (props: IFrequencyCalculatorResults) => {
 
+    const { entrances } = useMotionPrefs();
     // an image that fails to load falls back to the word, as the old avatar did
     const [failedImageUrl, setFailedImageUrl] = React.useState<string>('');
     const showImage: boolean = isSafeImageUrl(props.wordAsImageUrl) && failedImageUrl !== props.wordAsImageUrl;
@@ -22,12 +28,16 @@ const FrequencyCalculatorResults: React.FunctionComponent<IFrequencyCalculatorRe
                 <Typography variant="overline" component="span">
                     found
                 </Typography>
-                <span className="frequencyCount">{props.calculatedFrequency}</span>
+                <CountUp className="frequencyCount" value={props.calculatedFrequency ?? 0} />
                 <Typography variant="overline" component="span">
                     time(s)
                 </Typography>
             </div>
-            <figure className="wordPlate">
+            <motion.figure
+                className="wordPlate"
+                initial={entrances ? { opacity: 0, y: 8 } : false}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2, ease: EASE }}>
                 {showImage ?
                     <img
                         className="wordPlateImage"
@@ -41,7 +51,7 @@ const FrequencyCalculatorResults: React.FunctionComponent<IFrequencyCalculatorRe
                     <Typography variant="overline" component="figcaption" className="wordPlateCaption">
                         Image result for {props.wordToCalculateFrequency}
                     </Typography>}
-            </figure>
+            </motion.figure>
         </div>
     );
 };

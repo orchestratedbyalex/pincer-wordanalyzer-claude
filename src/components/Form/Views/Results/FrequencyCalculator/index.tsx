@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 // local components
 import SubmitWordForm from '../SubmitWordForm';
 import FrequencyCalculatorResults from '../FrequencyCalculatorResults';
+import SectionRule from '../../../../../motion/SectionRule';
 // redux
 import { calculateFrequency, clearFrequencyState, setWordToCalculateFrequency } from '../../../../../redux/actions/form';
 import { IFrequencyCalculator } from '../../../../../interfaces/IFrequencyCalculator';
@@ -23,6 +24,7 @@ const FrequencyCalculator: React.FunctionComponent<IFrequencyCalculator> = (prop
 
     return (
         <section className="detailsWrapper" aria-labelledby="frequency-calculator-heading">
+            <SectionRule delay={0.16} />
             <Typography id="frequency-calculator-heading" variant="h3" component="h3" className="detailsTitle">
                 Frequency calculator
             </Typography>

@@ -1,6 +1,7 @@
 import React from 'react';
 // External libs
 import { connect } from 'react-redux';
+import { AnimatePresence } from 'framer-motion';
 
 // local componets
 import AppLoader from '../Loader';
@@ -24,7 +25,12 @@ const Form: React.FunctionComponent<IForm> = (props: IForm) => {
                 <>
                     <Masthead />
                     <div className='appContent'>
-                        {FormViewFactory.create(props.view)}
+                        {/* the outgoing view finishes its exit before the next one enters */}
+                        <AnimatePresence exitBeforeEnter>
+                            <React.Fragment key={props.view}>
+                                {FormViewFactory.create(props.view)}
+                            </React.Fragment>
+                        </AnimatePresence>
                     </div>
                 </>
             }

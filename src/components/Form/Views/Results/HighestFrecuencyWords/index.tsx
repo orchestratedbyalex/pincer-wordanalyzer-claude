@@ -9,6 +9,7 @@ import { WordFrequencyAnalyzerHelper } from '../../../../../lib/WordFrecuencynal
 
 // local components
 import IndexEntry from '../IndexEntry';
+import SectionRule from '../../../../../motion/SectionRule';
 
 // interfaces
 import { IWordFrequency } from '../../../../../lib/interfaces/IWordFrequency';
@@ -35,6 +36,7 @@ const HighestFrequencyWords: React.FunctionComponent<IHighestFrequencyWords> = (
 
     return (
         <section className="detailsWrapper" aria-labelledby="highest-words-heading">
+            <SectionRule delay={0.08} />
             <Typography id="highest-words-heading" variant="h3" component="h3" className="detailsTitle">
                 Highest frequency
             </Typography>

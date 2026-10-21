@@ -19,6 +19,17 @@
     overflow-wrap: break-word;
 }
 
+/* inline-block so each word can rise on its own transform */
+.headlineWord {
+    display: inline-block;
+}
+
+.defaultViewForm {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(28px, 4vw, 48px);
+}
+
 .defaultViewDescription {
     max-width: 52ch;
     margin: 0;

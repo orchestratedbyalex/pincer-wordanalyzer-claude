@@ -8,6 +8,7 @@ import { WordFrequencyAnalyzer } from '../../../../../lib';
 
 // local components
 import IndexEntry from '../IndexEntry';
+import SectionRule from '../../../../../motion/SectionRule';
 
 //redux
 import { calculateFrequency, clearFrequencyState, setWordToCalculateFrequency } from '../../../../../redux/actions/form';
@@ -44,6 +45,7 @@ const TopWords: React.FunctionComponent<ITopWords> = (props: ITopWords) => {
 
     return (
         <section className="detailsWrapper" aria-labelledby="top-words-heading">
+            <SectionRule />
             <Typography id="top-words-heading" variant="h3" component="h3" className="detailsTitle">
                 Top words
             </Typography>

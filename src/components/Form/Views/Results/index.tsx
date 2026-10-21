@@ -2,7 +2,7 @@ import React from 'react';
 
 //External libs
 import { Button, Typography } from '@material-ui/core';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { connect } from 'react-redux';
 import Highlighter from "react-highlight-words";
 
@@ -22,6 +22,9 @@ import { FormView } from '../../../../enums/FormView';
 
 // interfaces
 import { IResultsView } from '../../../../interfaces/IResultsView';
+
+// motion
+import { EASE, useMotionPrefs } from '../../../../motion/MotionContext';
 
 // styles
 import './Results.css';
@@ -43,14 +46,15 @@ const setHighlighterTextProps = (props: IResultsView): IHighligherProps => {
 
 // component that contains rendered text and calculation widgets
 const ResultsView: React.FunctionComponent<IResultsView> = (props: IResultsView) => {
-    const shouldReduceMotion = useReducedMotion();
+    const { entrances } = useMotionPrefs();
 
     return (
         <motion.section
             aria-labelledby="results-title"
-            initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+            initial={entrances ? { opacity: 0, y: 12 } : false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }}
+            exit={entrances ? { opacity: 0, y: -8, transition: { duration: 0.24, ease: EASE } } : undefined}
+            transition={{ duration: 0.4, ease: EASE }}
             className='resultsContainer'>
             {/* kept for screen readers so the page outline stays intact; not shown on screen */}
             <h2 id="results-title" className="visually-hidden">Your word profile</h2>
@@ -59,7 +63,11 @@ const ResultsView: React.FunctionComponent<IResultsView> = (props: IResultsView)
                 <Typography id="source-text-title" variant="overline" component="h3" className="sourceTextTitle">
                     Analyzed text
                 </Typography>
-                <div className="analyzedText" tabIndex={0} aria-label="Analyzed text with selected words highlighted">
+                <div
+                    className="analyzedText"
+                    data-motion={entrances ? 'on' : 'off'}
+                    tabIndex={0}
+                    aria-label="Analyzed text with selected words highlighted">
                     <Highlighter
                         highlightClassName="YourHighlightClass"
                         searchWords={wordFrequencyAnalyzerHelper.getHighlightedWordsInText(props.text, props.wordToCalculateFrequency)}
