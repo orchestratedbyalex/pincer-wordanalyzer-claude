@@ -69,7 +69,9 @@ const ResultsView: React.FunctionComponent<IResultsView> = (props: IResultsView)
                     data-motion={entrances ? 'on' : 'off'}
                     tabIndex={0}
                     aria-label="Analyzed text with selected words highlighted">
+                    {/* keyed by the selection so the marks remount and the sweep replays each time */}
                     <Highlighter
+                        key={props.wordToCalculateFrequency}
                         highlightClassName="YourHighlightClass"
                         searchWords={wordFrequencyAnalyzerHelper.getHighlightedWordsInText(props.text, props.wordToCalculateFrequency)}
                         autoEscape={true}
