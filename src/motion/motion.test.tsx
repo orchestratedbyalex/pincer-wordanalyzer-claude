@@ -84,6 +84,24 @@ describe('motion', () => {
     expect(screen.getByRole('button', { name: /motion/i })).toHaveAttribute('aria-pressed', 'false');
   });
 
+  test('motion on: Start again keeps the results visible while they fade out', async () => {
+    const text = 'quiet house kept the quiet hours';
+    setMedia(false);
+    render(<WordAnalyzerApp />);
+    await analyze(text);
+
+    fireEvent.click(screen.getByRole('button', { name: /start again/i }));
+
+    // the outgoing results still hold their content during the exit
+    expect(document.querySelector('.analyzedText')!.textContent).toContain(text);
+    expect(document.querySelectorAll('nav [role="button"]').length).toBeGreaterThan(0);
+
+    // and the form arrives empty once they have left
+    const field = await screen.findByLabelText(/fill in your text/i, {}, { timeout: 4000 });
+    expect(field).toHaveValue('');
+    expect(screen.getByRole('button', { name: /analyze/i })).toBeDisabled();
+  });
+
   test('the Motion toggle pauses the ribbon and the tint', async () => {
     setMedia(false);
     render(<WordAnalyzerApp />);
