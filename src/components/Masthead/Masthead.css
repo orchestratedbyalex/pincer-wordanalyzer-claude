@@ -6,7 +6,7 @@
     justify-content: space-between;
     gap: 4px 24px;
     padding-bottom: 18px;
-    border-bottom: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-brass);
     margin-bottom: var(--space-section);
 }
 

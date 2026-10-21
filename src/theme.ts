@@ -5,6 +5,8 @@ import { Shadows } from '@material-ui/core/styles/shadows';
 // so the palette stays at MUI's defaults and every component is restyled through overrides
 // that read the tokens defined in index.css. No color value lives in this file.
 const ink = 'var(--color-ink)';
+const accent = 'var(--color-accent)';
+const accentDeep = 'var(--color-accent-deep)';
 const inkMuted = 'var(--color-ink-muted)';
 const page = 'var(--color-page)';
 const rule = 'var(--color-rule)';
@@ -85,10 +87,12 @@ const theme = createTheme({
       },
       contained: {
         color: page,
-        backgroundColor: ink,
+        backgroundColor: accent,
         '&:hover': {
-          backgroundColor: ink,
-          opacity: 0.88,
+          backgroundColor: accentDeep,
+        },
+        '&:active': {
+          backgroundColor: accentDeep,
         },
         '&$disabled': {
           color: inkMuted,
@@ -98,9 +102,9 @@ const theme = createTheme({
       },
       containedPrimary: {
         color: page,
-        backgroundColor: ink,
+        backgroundColor: accent,
         '&:hover': {
-          backgroundColor: ink,
+          backgroundColor: accentDeep,
         },
       },
       outlined: {

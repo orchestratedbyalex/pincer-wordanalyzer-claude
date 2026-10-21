@@ -16,7 +16,7 @@
 
 .sourceTextTitle {
     margin: 0;
-    color: var(--color-ink-muted);
+    color: var(--color-brass);
 }
 
 .analyzedText {
@@ -35,11 +35,15 @@
     outline-offset: 6px;
 }
 
-/* Sand plus a heavier weight, so the highlight never relies on color alone. */
+/* Blush plus a heavier weight and an oxblood underline, so the highlight never relies on color alone. */
 .YourHighlightClass {
     color: var(--color-ink);
     background: var(--color-highlight);
     font-weight: 600;
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 5px;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
 }
@@ -57,7 +61,7 @@
     min-width: 0;
     flex-direction: column;
     padding-top: 20px;
-    border-top: 1px solid var(--color-ink);
+    border-top: 1px solid var(--color-accent);
 }
 
 /* .detailsWrapper raises specificity over MUI's Typography margin reset */
@@ -105,7 +109,7 @@
 
 .indexRank {
     min-width: 2.6em;
-    color: var(--color-ink-muted);
+    color: var(--color-accent);
     font-family: var(--font-display);
     font-size: 1.125rem;
     font-style: italic;
@@ -119,7 +123,7 @@
 .indexLeader {
     flex: 1 1 24px;
     min-width: 24px;
-    border-bottom: 1px dotted var(--color-field-border);
+    border-bottom: 1px dotted var(--color-brass);
     transform: translateY(-4px);
 }
 
@@ -142,7 +146,7 @@
 }
 
 .frequencyWordLabel {
-    color: var(--color-ink-muted);
+    color: var(--color-brass);
 }
 
 .frequencyWordInputWrapper {
@@ -179,7 +183,7 @@
 }
 
 .frequencyCount {
-    color: var(--color-ink);
+    color: var(--color-accent);
     font-family: var(--font-display);
     font-size: 4rem;
     font-variant-numeric: lining-nums;

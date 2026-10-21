@@ -4,7 +4,12 @@
   --color-ink: #111111;
   --color-ink-muted: #5E5A54;
   --color-field-border: #8A7F6E;
-  --color-highlight: #E8DFD0;
+  --color-highlight: #F1DDD6;
+
+  /* The signature accent: oxblood with brass details, used with restraint. */
+  --color-accent: #7A1F2B;
+  --color-accent-deep: #5E1620;
+  --color-brass: #8A6A2F;
   --color-rule: rgba(17, 17, 17, 0.14);
   --color-ink-wash: rgba(17, 17, 17, 0.05);
 
