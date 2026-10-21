@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import WordAnalyzerApp from './WordAnalyzerApp';
 
 const mockFetch = jest.fn();
@@ -68,6 +68,33 @@ describe('<WordAnalyzerApp /> user flow', () => {
     const emptyTextInput = await screen.findByLabelText(/fill in your text/i);
     expect(emptyTextInput).toHaveValue('');
     expect(screen.getByRole('button', { name: /analyze/i })).toBeDisabled();
+  });
+
+  test('lists each word with its count and highlights the selected word', async () => {
+    render(<WordAnalyzerApp />);
+
+    await enterTextAndAnalyze('apple apple pear');
+
+    const topWords = screen.getByRole('navigation', { name: /top words/i });
+    const topApple = within(topWords).getByRole('button', { name: 'apple, 2 occurrences' });
+    const topPear = within(topWords).getByRole('button', { name: 'pear, 1 occurrences' });
+    expect(topApple).toHaveTextContent('apple');
+    expect(topApple).toHaveTextContent('2');
+    expect(topPear).toHaveTextContent('pear');
+    expect(topPear).toHaveTextContent('1');
+
+    const highest = screen.getByRole('navigation', { name: /highest frequency/i });
+    const highestApple = within(highest).getByRole('button', { name: 'apple, 2 occurrences' });
+    expect(highestApple).toHaveTextContent('apple');
+    expect(highestApple).toHaveTextContent('2');
+
+    fireEvent.click(topPear);
+
+    await waitFor(() => {
+      const highlighted = Array.from(document.querySelectorAll('.YourHighlightClass'));
+      // the helper pads each match with spaces, so compare the trimmed word
+      expect(highlighted.some((el) => el.textContent?.trim() === 'pear')).toBe(true);
+    });
   });
 
   test('keeps empty inputs on stable reject paths without requesting an image', async () => {
