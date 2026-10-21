@@ -1,7 +1,6 @@
 import React from 'react';
 // External libs
-import { Divider, Paper, Typography } from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+import { Typography } from '@material-ui/core';
 import { connect } from 'react-redux';
 // local components
 import SubmitWordForm from '../SubmitWordForm';
@@ -23,16 +22,10 @@ const FrequencyCalculator: React.FunctionComponent<IFrequencyCalculator> = (prop
     const frequencyIsCalculated: boolean = (props.calculatedFrequency !== undefined) && (wordToCalculate.length > 0);
 
     return (
-        <Paper component="section" elevation={0} className="detailsWrapper" aria-labelledby="frequency-calculator-heading">
-            <div className="detailsHeader">
-                <div className="resultIcon" aria-hidden="true">
-                    <Search />
-                </div>
-                <Typography id="frequency-calculator-heading" variant="h6" component="h3" className="detailsTitle">
-                    Frequency calculator
-                </Typography>
-            </div>
-            <Divider />
+        <section className="detailsWrapper" aria-labelledby="frequency-calculator-heading">
+            <Typography id="frequency-calculator-heading" variant="h3" component="h3" className="detailsTitle">
+                Frequency calculator
+            </Typography>
             <Typography id="frequency-description" className='frequencyDescription' variant="body2" component="p">
                 Type a word to find its frequency.
             </Typography>
@@ -47,7 +40,7 @@ const FrequencyCalculator: React.FunctionComponent<IFrequencyCalculator> = (prop
                     calculatedFrequency={props.calculatedFrequency}
                     wordAsImageUrl={props.wordAsImageUrl} />
             }
-        </Paper>
+        </section>
     );
 };
 

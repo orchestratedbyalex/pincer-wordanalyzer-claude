@@ -1,38 +1,47 @@
 import React from 'react';
 // External libs
-import { Avatar, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 // styles
 import '../Results.css';
-import { useStyles } from '../AvatarStyles';
 import { IFrequencyCalculatorResults } from '../../../../../interfaces/IFrequencyCalculatorResults';
 
+// the image URL comes from a third-party API: only plain https URLs are rendered
+const isSafeImageUrl = (url: string): boolean => /^https:\/\//i.test(url);
 
 // component that renders frequency calculator widget results
 const FrequencyCalculatorResults: React.FunctionComponent<IFrequencyCalculatorResults> = (props: IFrequencyCalculatorResults) => {
 
-    const avatarClasses = useStyles();
-    const frequencyWordImageExists: boolean = props.wordAsImageUrl.length > 0;
+    // an image that fails to load falls back to the word, as the old avatar did
+    const [failedImageUrl, setFailedImageUrl] = React.useState<string>('');
+    const showImage: boolean = isSafeImageUrl(props.wordAsImageUrl) && failedImageUrl !== props.wordAsImageUrl;
 
-    // local state to manage frecuency word 
     return (
         <div className="calculatedFrequencyDetails" role="status" aria-live="polite">
             <div className="resultsTextWrapper">
-                <Typography variant="overline">
+                <Typography variant="overline" component="span">
                     found
                 </Typography>
-                <Avatar className="frequencyCount">{props.calculatedFrequency}</Avatar>
-                <Typography variant="overline">
+                <span className="frequencyCount">{props.calculatedFrequency}</span>
+                <Typography variant="overline" component="span">
                     time(s)
                 </Typography>
             </div>
-            <div className="imageResultsContainer">
-                {frequencyWordImageExists &&
-                    <Typography variant="caption">Image result for {props.wordToCalculateFrequency}</Typography>}
-                <Avatar variant="rounded" className={avatarClasses.large}
-                    alt={props.wordToCalculateFrequency}
-                    src={props.wordAsImageUrl}>{props.wordToCalculateFrequency.toUpperCase()}</Avatar>
-            </div>
+            <figure className="wordPlate">
+                {showImage ?
+                    <img
+                        className="wordPlateImage"
+                        alt={props.wordToCalculateFrequency}
+                        src={props.wordAsImageUrl}
+                        onError={() => setFailedImageUrl(props.wordAsImageUrl)} />
+                    :
+                    <span className="wordPlateFallback">{props.wordToCalculateFrequency.toUpperCase()}</span>
+                }
+                {showImage &&
+                    <Typography variant="overline" component="figcaption" className="wordPlateCaption">
+                        Image result for {props.wordToCalculateFrequency}
+                    </Typography>}
+            </figure>
         </div>
     );
 };

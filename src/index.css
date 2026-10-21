@@ -23,17 +23,6 @@
   --motion-fast: 180ms;
   --motion-medium: 260ms;
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* Transitional aliases for the view stylesheets until T-12 and T-13 rewrite them. */
-  --color-text: var(--color-ink);
-  --color-text-muted: var(--color-ink-muted);
-  --color-border: var(--color-rule);
-  --color-surface: var(--color-page);
-  --color-surface-muted: var(--color-page);
-  --color-focus: var(--color-ink);
-  --radius-small: var(--radius-control);
-  --radius-medium: var(--radius-box);
-  --radius-large: var(--radius-box);
 }
 
 * {

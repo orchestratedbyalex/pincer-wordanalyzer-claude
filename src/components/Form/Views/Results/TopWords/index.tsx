@@ -1,11 +1,13 @@
 import React from 'react';
 //External libs
-import { Avatar, Divider, List, ListItem, ListItemIcon, ListItemText, Paper, TextField, Typography } from '@material-ui/core';
-import { EmojiEvents } from '@material-ui/icons';
+import { List, TextField, Typography } from '@material-ui/core';
 import { connect } from 'react-redux';
 
 // local libs
 import { WordFrequencyAnalyzer } from '../../../../../lib';
+
+// local components
+import IndexEntry from '../IndexEntry';
 
 //redux
 import { calculateFrequency, clearFrequencyState, setWordToCalculateFrequency } from '../../../../../redux/actions/form';
@@ -16,9 +18,6 @@ import '../Results.css';
 //interfaces
 import { ITopWords } from '../../../../../interfaces/ITopWords';
 import { IWordFrequency } from '../../../../../lib/interfaces/IWordFrequency';
-
-// constants
-import { top20Colors } from '../../../../../constants/TopFrecuencyColors';
 
 const wordFrequencyAnalyzer: WordFrequencyAnalyzer = new WordFrequencyAnalyzer();
 
@@ -44,18 +43,12 @@ const TopWords: React.FunctionComponent<ITopWords> = (props: ITopWords) => {
     const wordFrequencyArray: IWordFrequency[] = wordFrequencyAnalyzer.calculateMostFrequentNWords(props.text, topNumberOfWords);
 
     return (
-        <Paper component="section" elevation={0} className="detailsWrapper" aria-labelledby="top-words-heading">
-            <div className="detailsHeader">
-                <div className="resultIcon" aria-hidden="true">
-                    <EmojiEvents />
-                </div>
-                <Typography id="top-words-heading" variant="h6" component="h3" className="detailsTitle">
-                    Top words
-                </Typography>
-            </div>
-            <Divider />
+        <section className="detailsWrapper" aria-labelledby="top-words-heading">
+            <Typography id="top-words-heading" variant="h3" component="h3" className="detailsTitle">
+                Top words
+            </Typography>
             <div className="topWordsControl">
-                <Typography variant="body2" component="span">Show</Typography>
+                <Typography variant="overline" component="span">Show</Typography>
                 <TextField
                     autoComplete="off"
                     className="topWordsAmountTextField"
@@ -70,34 +63,24 @@ const TopWords: React.FunctionComponent<ITopWords> = (props: ITopWords) => {
                     type="number"
                     variant="outlined"
                 />
-                <Typography variant="body2" component="span">words</Typography>
+                <Typography variant="overline" component="span">words</Typography>
             </div>
             <List
                 component="nav"
                 aria-labelledby="top-words-heading"
                 className="resultList"
             >
-                <Typography className='frequencyTitle' component="p">Frequency</Typography>
                 {
-                    wordFrequencyArray.map((word, index) => {
-                        return (
-                            <ListItem
-                                button
-                                aria-label={`${word.getWord()}, ${word.getFrequency()} occurrences`}
-                                key={word.getWord() + "_" + word.getFrequency() + "__li"}
-                                onClick={() => onClickListItem(word.getWord(), props.dispatch)}>
-                                <ListItemIcon>
-                                    <Avatar className="frequencyBadge" style={{ backgroundColor: top20Colors[index % top20Colors.length] }}>
-                                        {word.getFrequency()}
-                                    </Avatar>
-                                </ListItemIcon>
-                                <ListItemText primary={word.getWord()} />
-                            </ListItem>
-                        )
-                    })
+                    wordFrequencyArray.map((word, index) => (
+                        <IndexEntry
+                            key={word.getWord() + "_" + word.getFrequency() + "__li"}
+                            rank={index + 1}
+                            word={word}
+                            onSelect={(selected) => onClickListItem(selected, props.dispatch)} />
+                    ))
                 }
             </List>
-        </Paper>
+        </section>
     );
 };
 
