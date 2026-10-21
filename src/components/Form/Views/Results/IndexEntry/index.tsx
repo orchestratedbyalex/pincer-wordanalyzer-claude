@@ -14,11 +14,15 @@ import { EASE, useMotionPrefs } from '../../../../../motion/MotionContext';
 import '../Results.css';
 
 const ROMAN_NUMERALS: Array<[number, string]> = [
+    [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
     [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
 ];
+const ROMAN_MAX = 3999;
 
-// ranks run from 1 to 100 (the top-words clamp), so C is the largest numeral needed
+// Top words is clamped to 100, but Highest frequency lists every tie, so ranks are unbounded.
+// Standard numerals stop at 3999; past that the rank is written in Arabic digits.
 export const toRoman = (value: number): string => {
+    if (value > ROMAN_MAX) return String(value);
     let remaining = value;
     let numeral = '';
     for (const [amount, symbol] of ROMAN_NUMERALS) {
