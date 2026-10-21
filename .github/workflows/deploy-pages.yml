@@ -28,6 +28,14 @@ jobs:
       - run: pnpm test
         env:
           CI: 'true'
+      - name: Require the Pixabay key
+        env:
+          REACT_APP_PIXABAY_API_KEY: ${{ secrets.REACT_APP_PIXABAY_API_KEY }}
+        run: |
+          if ! test -n "$REACT_APP_PIXABAY_API_KEY"; then
+            echo "::error::The REACT_APP_PIXABAY_API_KEY repository secret is empty or missing; set it before deploying."
+            exit 1
+          fi
       - run: pnpm build
         env:
           CI: 'true'
