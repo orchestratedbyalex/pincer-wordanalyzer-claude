@@ -12,18 +12,42 @@ const RIBBON_WORDS = 8;
 const WordRibbon: React.FunctionComponent<{ text: string }> = ({ text }) => {
     const { ambient } = useMotionPrefs();
     const words = wordFrequencyAnalyzer.calculateMostFrequentNWords(text, RIBBON_WORDS).map((w) => w.getWord());
+    const ribbonRef = React.useRef<HTMLDivElement>(null);
+    const copyRef = React.useRef<HTMLSpanElement>(null);
+    // how many times the word set repeats inside one copy, so one copy covers the ribbon
+    const [repeats, setRepeats] = React.useState<number>(1);
+
+    React.useLayoutEffect(() => {
+        const measure = () => {
+            const ribbon = ribbonRef.current;
+            const copy = copyRef.current;
+            if (!ribbon || !copy) return;
+            const oneSet = copy.scrollWidth / repeats;
+            // nothing measurable (e.g. jsdom): keep a single set
+            if (oneSet <= 0) return;
+            const needed = Math.max(1, Math.ceil(ribbon.clientWidth / oneSet));
+            if (needed !== repeats) setRepeats(needed);
+        };
+        measure();
+        window.addEventListener('resize', measure);
+        return () => window.removeEventListener('resize', measure);
+    }, [repeats, text]);
 
     if (words.length === 0) return null;
 
-    // the sequence is rendered twice so the -50% loop is seamless
-    const sequence = [...words, ...words];
+    const copy = Array.from({ length: repeats }, () => words).flat();
+    const renderCopy = (ref?: React.Ref<HTMLSpanElement>) => (
+        <span className="wordRibbonCopy" ref={ref}>
+            {copy.map((word, index) => <span className="wordRibbonWord" key={word + '_' + index}>{word}</span>)}
+        </span>
+    );
 
+    // two identical copies make the -50% loop seamless
     return (
-        <div className="wordRibbon" data-ribbon aria-hidden="true" data-state={ambient ? 'running' : 'paused'}>
+        <div ref={ribbonRef} className="wordRibbon" data-ribbon aria-hidden="true" data-state={ambient ? 'running' : 'paused'}>
             <div className="wordRibbonTrack">
-                {sequence.map((word, index) => (
-                    <span className="wordRibbonWord" key={word + '_' + index}>{word}</span>
-                ))}
+                {renderCopy(copyRef)}
+                {renderCopy()}
             </div>
         </div>
     );

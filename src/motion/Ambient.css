@@ -86,6 +86,11 @@
     animation: ribbonScroll 48s linear infinite;
 }
 
+.wordRibbonCopy {
+    display: flex;
+    flex: none;
+}
+
 .wordRibbon[data-state="paused"] .wordRibbonTrack,
 .wordRibbon:hover .wordRibbonTrack {
     animation-play-state: paused;
